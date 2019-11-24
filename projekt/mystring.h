@@ -18,7 +18,10 @@
 #include <string.h>
 
                                   /* Hlavičky funkcí pro paci s stringem */
+
+void addChar(char* str, char c);
 char* stringCreate(const char* s);
 void stringFree(char* s);
+
 
 #endif

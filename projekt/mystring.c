@@ -11,6 +11,11 @@
 **/
 #include"mystring.h"
 
+void addChar(char* str, char c){
+
+    str[strlen(str)]=c;
+}
+
 char* stringCreate(const char* s){
 
     char* new=malloc(strlen(s)+1);
@@ -21,7 +26,9 @@ char* stringCreate(const char* s){
     strcpy(new,s);
     return new;
 }
+
 void stringFree(char* s){
 
     free(s);
 }
+
