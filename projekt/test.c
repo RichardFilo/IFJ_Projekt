@@ -3,7 +3,7 @@
 #include"scanner.h"
 
 int main(int argc, char* argv[]){
-
+/*
 	tStack* s=stackInit();
 
 	for(int i=1; i<argc; i++){
@@ -29,14 +29,18 @@ int main(int argc, char* argv[]){
 	printf("%s\n",st);
 	stringFree(st);
 	stackFree(s);
-
+*/
 	if(argc==2){
 		if(scanner_init(argv[1])) return 99;
 	}
 	else if(scanner_init("stdin")) return 99;
 
-	getToken();
-
+	int t;
+	while((t=getToken())==0){
+		printf("%d	",token.type);
+	}
+	if(t==1) printf("ERROR\n");
+	else if(t==-1) printf("KONIEC\n");
 	scanner_free();
 
 	return 0;

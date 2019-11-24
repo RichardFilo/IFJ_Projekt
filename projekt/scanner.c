@@ -54,10 +54,72 @@ void scanner_free(){
 
 int getToken(char* atribut){
 
-    int c;
-    while((c=fgetc(input))!=-1) putc(c,stdout);
+    int c, i=0;
+    int state=0;
+    char buffer[200]={0};
 
-    printf("\n");
+    while((c=fgetc(input))!=-1){
 
-    return 0;
+        switch(state){
+
+            case 0:
+                if(FTflag){
+                    if(c==' '){
+                        i++;
+                    }
+                    else if(c=='\n'){
+                        i=0;
+                    }
+                    else{
+                        ungetc(c,input);
+                        if(stackTop(stack)<i){
+                            FTflag=0;
+                            stackPush(stack,i);
+                            token.type=TT_INDENT;
+                            return 0;
+                        }
+                        else if(stackTop(stack)>i){
+                            stackPop(stack);
+                            if(stackTop(stack)==i){
+                                token.type=TT_DEDENT;
+                                FTflag=0;
+                                return 0;
+                            }
+                            else if(stackTop(stack)<i){
+                                return 1;
+                            }
+                            else{
+                                token.type=TT_DEDENT;
+                                FTflag=1;
+                                return 0;
+                            }
+                        }
+                        else{
+                            FTflag=0;
+                        } 
+                    }
+                }
+                else{
+                    if(c=='\n'){
+                        token.type=TT_EOL;
+                        FTflag=1;
+                        return 0;
+                    }
+                    else if(c=='a'){
+                        token.type=TT_ID;
+                        return 0;
+                    }
+                }
+                break;    
+        }
+
+
+    }
+    if(stackPop(stack)!=0){
+        token.type=TT_DEDENT;
+        return 0;
+    }
+
+    token.type=TT_EOF;
+    return -1;
 }
