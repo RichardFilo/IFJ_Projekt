@@ -60,6 +60,8 @@ int getToken(char* atribut){
 
     while((c=fgetc(input))!=-1){
 
+        char uv[3]={0};
+
         switch(state){
 
             case 0:
@@ -113,6 +115,8 @@ int getToken(char* atribut){
                         state=2;
                         addChar(buffer,c);
                     }
+                    else if(c==39) state=3;
+                    else if(c==34) state=4;
                     else if(c=='#') state=1;
                 }
                 break;
@@ -138,9 +142,72 @@ int getToken(char* atribut){
                     }
                 }
                 break;
+            case 3:
+                if(c==39){
+                    token.type=TT_VALUE_STRING;
+                    token._string=stringCreate(buffer);
+                    return 0;
+                }
+                else if(c=='\n'){
+                    fprintf(stderr,"ERROR 1: Neukonceny retazcovy literal\n");
+                    return 1;
+                }
+                else{
+                    addChar(buffer,c);
+                }
+                break;
+            case 4:
+                uv[0]=c;
+                c=fgetc(input);
+                uv[1]=c;
+                if(strcmp((char*)uv,"\"\"")==0){
+                    state=5;
+                }
+                else{
+                    fprintf(stderr,"ERROR 1: Zle zacaty dokumentacny retazec\n");
+                    return 1;
+                }
+                break;
+            case 5:
+                if(c==34){
+                    c=fgetc(input);
+                    uv[0]=c;
+                    c=fgetc(input);
+                    uv[1]=c;
+                    if(strcmp((char*)uv,"\"\"")==0){
+                        token.type=TT_VALUE_STRING;
+                        token._string=stringCreate(buffer);
+                        return 0;
+                    }
+                    else if(uv[1]==-1){
+                        fprintf(stderr,"ERROR 1: Zle ukonceny dokumentacny retazec\n");
+                        return 1;
+                    }
+                    else{
+                        ungetc(uv[1],input);
+                        ungetc(uv[0],input);
+                        addChar(buffer,34);
+                    }
+                }
+                else if(c=='\\'){
+                    c=fgetc(input);
+                    if(c==34) addChar(buffer,34);
+                    else{
+                        ungetc(c,input);
+                        addChar(buffer,'\\');
+                    }
+                }
+                else{
+                    addChar(buffer,c);
+                }
+                break;
         }
 
 
+    }
+    if(state==5){
+        fprintf(stderr,"ERROR 1: Zle ukonceny dokumentacny retazec\n");
+        return 1;
     }
     if(stackPop(stack)!=0){
         token.type=TT_DEDENT;

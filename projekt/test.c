@@ -42,9 +42,14 @@ int main(int argc, char* argv[]){
 			printf("ID:%s\n",token._string);
 			stringFree(token._string);
 		}
+		else if(token.type==4){
+			printf("STRING:'%s'\n",token._string);
+			stringFree(token._string);
+		}
 		else printf("%d\n",token.type);
 	}
 	if(t==1) {
+		scanner_free();
 		return 1;
 	}
 	else if(t==-1) printf("KONIEC\n");
