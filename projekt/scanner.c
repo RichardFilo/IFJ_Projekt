@@ -23,7 +23,41 @@ int checkKeyWord(char* str){
     else return -1;
 }
 
+int scanner_init(char* file){
+
+    if(strcmp(file,"stdin")){
+
+        input=fopen(file,"r");
+        if(input==NULL) {
+            fprintf(stderr,"ERROR 99: Nepodarilo sa otvorit subor");
+            return -1;
+        }
+    }
+    else input=stdin;
+
+    stack=stackInit();
+    if(stack==NULL){
+        fclose(input);
+        return -1;
+    }
+
+    stackPush(stack,0);
+    FTflag=1;
+    return 0;
+}
+
+void scanner_free(){
+
+    fclose(input);
+    stackFree(stack);
+}
+
 int getToken(char* atribut){
-    
-    
+
+    int c;
+    while((c=fgetc(input))!=-1) putc(c,stdout);
+
+    printf("\n");
+
+    return 0;
 }

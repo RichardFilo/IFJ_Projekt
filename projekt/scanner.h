@@ -17,35 +17,31 @@
 #include<ctype.h>
 
 	typedef enum {
-		TT_,
 		TT_EOF,
 		TT_ID,
 		TT_VALUE_INT,
 		TT_VALUE_DOUBLE,
 		TT_VALUE_STRING,
 	//key words
-		TT_AUTO = TYPE_KEYWORD,
-		TT_INT,
-		TT_DOUBLE,
-		TT_STRING,
-		TT_CIN,
-		TT_COUT,
-		TT_FOR,
-		TT_IF,
+		TT_DEF,
 		TT_ELSE,
+		TT_IF,
+		TT_NONE,
+		TT_PASS,
 		TT_RETURN,
 		TT_WHILE,
-		TT_DO,
 	//delimiters
+        TT_EOL,
 		TT_COLON,
 		TT_INDENT,
 		TT_DEDENT,
-		TT_L_BRACKET,
-		TT_R_BRACKET,
+		TT_LEFT_BRACKET,
+		TT_RIGHT_BRACKET,
 		TT_COMMA,
 	//operators
 		TT_MULTIPLY,
-		TT_DIVIDE,
+		TT_DIVIDE_INT,
+		TT_DIVIDE_FLOAT,
 		TT_ADD,
 		TT_SUB,
 		TT_L,
@@ -54,9 +50,7 @@
 		TT_GE,
 		TT_LE,
 		TT_E,
-		TT_NE,
-		TT_IN,
-		TT_OUT
+		TT_NE
 	} tToken;
 
 	struct {
@@ -67,6 +61,10 @@
 			char* _string;
 		};
 	} token;
+
+    int FTflag;
+    FILE* input;
+	tStack* stack;
 
 int scanner_init(char* file);
 
