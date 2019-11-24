@@ -20,7 +20,7 @@ tStack* stackInit () {
 	
 	tStack* new=malloc(sizeof(tStack));
 	if(new==NULL){
-		fprintf(stderr,"ERROR 99: Chyba alokace pamati");
+		fprintf(stderr,"ERROR 99: Chyba alokace pamati\n");
 		return NULL;	
 	}
 	new->top=-1;

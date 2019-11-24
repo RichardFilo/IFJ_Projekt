@@ -37,9 +37,16 @@ int main(int argc, char* argv[]){
 
 	int t;
 	while((t=getToken())==0){
-		printf("%d	",token.type);
+		
+		if(token.type==1) {
+			printf("ID:%s\n",token._string);
+			stringFree(token._string);
+		}
+		else printf("%d\n",token.type);
 	}
-	if(t==1) printf("ERROR\n");
+	if(t==1) {
+		return 1;
+	}
 	else if(t==-1) printf("KONIEC\n");
 	scanner_free();
 

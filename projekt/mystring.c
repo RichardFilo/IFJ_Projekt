@@ -20,7 +20,7 @@ char* stringCreate(const char* s){
 
     char* new=malloc(strlen(s)+1);
     if(new==NULL){
-        fprintf(stderr,"ERROR 99: Chyba alokace pamate");
+        fprintf(stderr,"ERROR 99: Chyba alokace pamate\n");
         return NULL;
     }
     strcpy(new,s);

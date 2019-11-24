@@ -31,7 +31,7 @@
 		TT_RETURN,
 		TT_WHILE,
 	//delimiters
-        TT_EOL,
+		TT_EOL,
 		TT_COLON,
 		TT_INDENT,
 		TT_DEDENT,
