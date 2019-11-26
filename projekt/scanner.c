@@ -117,6 +117,11 @@ int getToken(char* atribut){
                     }
                     else if(c==39) state=3;
                     else if(c==34) state=4;
+                    else if(isdigit(c)) {
+                        addChar(buffer,c);
+                        if(c=='0') state=6;
+                        else state=7;
+                    }
                     else if(c=='#') state=1;
                 }
                 break;
@@ -199,6 +204,108 @@ int getToken(char* atribut){
                 }
                 else{
                     addChar(buffer,c);
+                }
+                break;
+            case 6:
+                if(c=='.'){
+                    state=8;
+                    addChar(buffer,c);
+                }
+                else if(toupper(c)=='E'){
+                    state=9;
+                    addChar(buffer,c);
+                }
+                else if(isdigit(c)){
+                    fprintf(stderr,"ERROR 1: Prebytocne nuly na zaciatku cisla\n");
+                    return 1;
+                }
+                else{
+                    ungetc(c,input);
+                    token.type=TT_VALUE_INT;
+                    token._int=0;
+                    return 0;
+                }
+                break;
+            case 7:
+                if(c=='.'){
+                    state=8;
+                    addChar(buffer,c);
+                }
+                else if(toupper(c)=='E'){
+                    state=9;
+                    addChar(buffer,c);
+                }
+                else if(isdigit(c)){
+                    addChar(buffer,c);
+                    state=7;
+                }
+                else{
+                    ungetc(c,input);
+                    token.type=TT_VALUE_INT;
+                    token._int=atoi(buffer);
+                    return 0;
+                }
+                break;
+            case 8:
+                if(isdigit(c)){
+                    state=10;
+                    addChar(buffer,c);
+                }
+                else{
+                    fprintf(stderr,"ERROR 1: Zle napisane desatinne cislo\n");
+                    return 1;
+                }
+                break;
+            case 9:
+                if(c=='+'||c=='-'){
+                    state=11;
+                    addChar(buffer,c);
+                }
+                else if(isdigit(c)){
+                    state=12;
+                    addChar(buffer,c);
+                }
+                else{
+                    fprintf(stderr,"ERROR 1: Zle napisane desatinne cislo\n");
+                    return 1;
+                }
+                break;
+            case 10:
+                if(toupper(c)=='E'){
+                    state=9;
+                    addChar(buffer,c);
+                }
+                else if(isdigit(c)){
+                    addChar(buffer,c);
+                    state=10;
+                }
+                else{
+                    ungetc(c,input);
+                    token.type=TT_VALUE_DOUBLE;
+                    token._float=atof(buffer);
+                    return 0;
+                }
+                break;
+            case 11:
+                if(isdigit(c)){
+                    state=10;
+                    addChar(buffer,c);
+                }
+                else{
+                    fprintf(stderr,"ERROR 1: Zle napisane desatinne cislo\n");
+                    return 1;
+                }
+                break;
+            case 12:
+                if(isdigit(c)){
+                    addChar(buffer,c);
+                    state=12;
+                }
+                else{
+                    ungetc(c,input);
+                    token.type=TT_VALUE_DOUBLE;
+                    token._float=atof(buffer);
+                    return 0;
                 }
                 break;
         }

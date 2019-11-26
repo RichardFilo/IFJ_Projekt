@@ -46,6 +46,12 @@ int main(int argc, char* argv[]){
 			printf("STRING:'%s'\n",token._string);
 			stringFree(token._string);
 		}
+		else if(token.type==2){
+			printf("INT:%d\n",token._int);
+		}
+		else if(token.type==3){
+			printf("FLOAT:%g\n",token._float);
+		}
 		else printf("%d\n",token.type);
 	}
 	if(t==1) {
