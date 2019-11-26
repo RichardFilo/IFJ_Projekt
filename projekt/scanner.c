@@ -13,13 +13,13 @@
 
 int checkKeyWord(char* str){
 
-    if(strcmp(str,"def")==0) return 5;
-    else if(strcmp(str,"else")==0) return 6;
-    else if(strcmp(str,"if")==0) return 7;
-    else if(strcmp(str,"none")==0) return 8;
-    else if(strcmp(str,"pass")==0) return 9;
-    else if(strcmp(str,"return")==0) return 10;
-    else if(strcmp(str,"while")==0) return 11;
+    if(strcmp(str,"def")==0) return TT_DEF;
+    else if(strcmp(str,"else")==0) return TT_ELSE;
+    else if(strcmp(str,"if")==0) return TT_IF;
+    else if(strcmp(str,"none")==0) return TT_NONE;
+    else if(strcmp(str,"pass")==0) return TT_PASS;
+    else if(strcmp(str,"return")==0) return TT_RETURN;
+    else if(strcmp(str,"while")==0) return TT_WHILE;
     else return 0;
 }
 
@@ -109,6 +109,21 @@ int getToken(char* atribut){
                     if(c=='\n'){
                         token.type=TT_EOL;
                         FTflag=1;
+                        return 0;
+                    }
+                    else if(c==':'){
+                        token.type=TT_COLON;
+                        return 0;
+                    }
+                    else if(c=='('){
+                        token.type=TT_LEFT_BRACKET;
+                        return 0;
+                    }
+                    else if(c==')'){
+                        token.type=TT_RIGHT_BRACKET;
+                        return 0;
+                    }else if(c==','){
+                        token.type=TT_COMMA;
                         return 0;
                     }
                     else if(isalpha(c)||c=='_'){
