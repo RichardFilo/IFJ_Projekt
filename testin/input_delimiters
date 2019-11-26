@@ -1,0 +1,9 @@
+(x1:x2)#asdasdas
+funkcia(x1,x2,x3):
+  a 123.5
+  b 0
+  return ab
+
+#main
+c funkcia(1,2,3)
+return 0
