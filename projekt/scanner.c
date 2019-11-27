@@ -157,6 +157,11 @@ int getToken(char* atribut){
                         else state=7;
                     }
                     else if(c=='#') state=1;
+                    else if(isspace(c)) state=0;
+                    else {
+                        fprintf(stderr,"ERROR 1: Neznamy Token\n");
+                        return 1;
+                    }
                 }
                 break;
             case 1:
