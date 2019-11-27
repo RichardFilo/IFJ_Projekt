@@ -1,11 +1,13 @@
 
 /* ****************************** stackINT.c ******************************** */
 /*  Předmět: IFJ a IAL						                                  */
-/*  Lexikalna analiza                                                         */
+/*  Lexikalna analyza                                                         */
 /*  Vytvořil: RIchard Filo			                                          */
 /* ************************************************************************** */
 /*
 **    getToken ..... Vrati prislusny token
+**    scannerInit .... inicializacia skenra
+**    scannerFree .... uvolnenie pamate
 **
 **/
 
@@ -66,9 +68,9 @@
     FILE* input;
 	tStack* stack;
 
-int scanner_init(char* file);
+int scannerInit(char* file);
 
-void scanner_free();
+void scannerFree();
 
 int getToken();
 

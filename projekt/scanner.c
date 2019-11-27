@@ -1,12 +1,14 @@
 
 /* ****************************** stackINT.c ******************************** */
 /*  Předmět: IFJ a IAL						                                  */
-/*  Lexikalna analiza                                                         */
+/*  Lexikalna analyza                                                         */
 /*  Vytvořil: RIchard Filo			                                          */
 /* ************************************************************************** */
 /*
-**    getToken .... inicializace zásobníku
+**    getToken ....... inicializace zásobníku
 **    checkKeyWord ... test na klucove slovo
+**    scannerInit .... inicializacia skenra
+**    scannerFree .... uvolnenie pamate
 **
 **/
 #include"scanner.h"
@@ -23,7 +25,7 @@ int checkKeyWord(char* str){
     else return 0;
 }
 
-int scanner_init(char* file){
+int scannerInit(char* file){
 
     if(strcmp(file,"stdin")){
 
@@ -46,7 +48,7 @@ int scanner_init(char* file){
     return 0;
 }
 
-void scanner_free(){
+void scannerFree(){
 
     fclose(input);
     stackFree(stack);
@@ -126,6 +128,23 @@ int getToken(char* atribut){
                         token.type=TT_COMMA;
                         return 0;
                     }
+                    else if(c=='+'){
+                        token.type=TT_ADD;
+                        return 0;
+                    }
+                    else if(c=='-'){
+                        token.type=TT_SUB;
+                        return 0;
+                    }
+                    else if(c=='*'){
+                        token.type=TT_MULTIPLY;
+                        return 0;
+                    }
+                    else if(c=='/') state=13;
+                    else if(c=='<') state=14;
+                    else if(c=='>') state=15;
+                    else if(c=='=') state=16;
+                    else if(c=='!') state=17;
                     else if(isalpha(c)||c=='_'){
                         state=2;
                         addChar(buffer,c);
@@ -321,6 +340,65 @@ int getToken(char* atribut){
                     token.type=TT_VALUE_DOUBLE;
                     token._float=atof(buffer);
                     return 0;
+                }
+                break;
+            case 13:
+                if(c=='/'){
+                    token.type=TT_DIVIDE_INT;
+                    return 0;
+                }
+                else
+                {
+                    ungetc(c,input);
+                    token.type=TT_DIVIDE_FLOAT;
+                    return 0;
+                }
+                break;
+            case 14:
+                if(c=='='){
+                    token.type=TT_LE;
+                    return 0;
+                }
+                else
+                {
+                    ungetc(c,input);
+                    token.type=TT_L;
+                    return 0;
+                }
+                break;
+            case 15:
+                if(c=='='){
+                    token.type=TT_GE;
+                    return 0;
+                }
+                else
+                {
+                    ungetc(c,input);
+                    token.type=TT_G;
+                    return 0;
+                }
+                break;
+            case 16:
+                if(c=='='){
+                    token.type=TT_E;
+                    return 0;
+                }
+                else
+                {
+                    ungetc(c,input);
+                    token.type=TT_ASSIGN;
+                    return 0;
+                }
+                break;
+            case 17:
+                if(c=='='){
+                    token.type=TT_NE;
+                    return 0;
+                }
+                else
+                {
+                    fprintf(stderr,"ERROR 1: Neznamy operator '!'.\n");
+                    return 1;
                 }
                 break;
         }
