@@ -54,7 +54,7 @@ void scannerFree(){
     stackFree(stack);
 }
 
-int getToken(char* atribut){
+int getToken(){
 
     int c, i=0;
     int state=0;
