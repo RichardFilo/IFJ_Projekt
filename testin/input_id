@@ -1,7 +1,41 @@
-hoj
-x1
-2s
-_input
-  asdas sada	dasd
-  $sda
+test_id_with_number1
+test_id_with_number_1
+test_id_with_number_123_in
+2test_id_with_integer_on_the_first
+2.5test_id_with_double_on_the_first
+_test_id_with_underscore_on_the_first
 
+"""test_id_string_with_three_double_quo_marks"""
+'test_id_with_single_quo_marks'
+'test_id_with_number_123_in'
+
+ test_id_with_space_on_the_first
+	test_id_with_tab_on_the_first
+
+test_id_with_two_ID_on_same_line this_is_second
+
+test_id_wi/th_divide
+test_id_wi*th_multiply
+test_id_wi-th_sub
+test_id_wi+th_add
+test_id_wi<th_lesser
+test_id_wi>th_greater
+test_id_wi=th_assign
+test_id_wi<=th_lesser_equal
+test_id_wi>=th_greater_equal
+test_id_wi==th_equal
+test_id_wi!=th_not_equal
+test_id_wi///th_three_divides
+
+test_id_with_def_in
+def
+	test_id_with_else_in
+	else
+		test_id_with_if_in
+		if
+			test_id_with_none_in
+			none
+				test_id_with_pass_in
+				pass
+					test_id_with_return_in
+					return
