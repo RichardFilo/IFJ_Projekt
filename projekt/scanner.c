@@ -1,14 +1,14 @@
 
-/* ****************************** stackINT.c ******************************** */
-/*  Předmět: IFJ a IAL						                                  */
-/*  Lexikalna analyza                                                         */
-/*  Vytvořil: RIchard Filo			                                          */
+/* ******************************* scanner.c ******************************** */
+/*  Předmět: IFJ a IAL						              */
+/*  Lexikalna analýza                                                         */
+/*  Vytvořil: Richard Filo			                              */
 /* ************************************************************************** */
 /*
-**    getToken ....... inicializace zásobníku
-**    checkKeyWord ... test na klucove slovo
-**    scannerInit .... inicializacia skenra
-**    scannerFree .... uvolnenie pamate
+**    getToken ....... Inicializace zásobníku
+**    checkKeyWord ... Test na kľúčové slovo
+**    scannerInit .... Inicializácia skenera
+**    scannerFree .... Uvoľnenie pamäte
 **
 **/
 #include"scanner.h"

@@ -1,12 +1,12 @@
 
-/******************************** string.c ************************************/
-/*  Předmět: IFJ a IAL						                                  */
-/*  Dynamicky alokovany string                                                */
-/*  Vytvořil: RIchard Filo			                                          */
+/******************************** mystring.c **********************************/
+/*  Předmět: IFJ a IAL						              */
+/*  Dynamicky alokovaný string                                                */
+/*  Vytvořil: Richard Filo			                              */
 /* ************************************************************************** */
 /*
-**    stringCreate .... vytvori dynamicky alokovany string
-**    stringFree ... uvolni pamat
+**    stringCreate .... Vytvoří dynamicky alokovaný string
+**    stringFree ... Uvoľní pamäť
 **
 **/
 #include"mystring.h"
