@@ -3,7 +3,7 @@ Vystup pre testovacie vstupy:
 ERROR 1 pri zadani znaku	~`@$%^&[{]};\|		neznamy token
 
 ERROR 1 pri zadani	'string		neukonceny retazcovy literal
-Pri zadani 	"""string	v subore test_id ***stash smacking detected***
+
 
 
 
