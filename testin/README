@@ -1,0 +1,8 @@
+Toto je adresár s testovacími vstupmi.
+
+input_delimiters	-> Testovanie delimiterov
+input_example		-> Testovací vstup čislo 1
+input_example2		-> Testovací vstup číslo 2
+input_id		-> Testovanie identifikátorov
+input_numbers		-> Testovanie číselných vstupov
+testin_error_output	-> Chybový výstup
