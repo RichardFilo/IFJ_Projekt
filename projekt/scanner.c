@@ -58,7 +58,7 @@ int getToken(){
 
     int c, i=0;
     int state=0;
-    char buffer[200]={0};
+    char buffer[1000]={0};
 
     while((c=fgetc(input))!=-1){
 
