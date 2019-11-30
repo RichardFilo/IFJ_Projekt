@@ -8,6 +8,7 @@
 **    stringCreate .... Vytvoří dynamicky alokovaný string
 **    stringFree ... Uvoľní pamäť
 **
+**
 **/
 #include"mystring.h"
 
