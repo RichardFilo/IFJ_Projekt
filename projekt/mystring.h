@@ -1,12 +1,12 @@
 
-/******************************** string.h ************************************/
-/*  Předmět: IFJ a IAL						                                  */
-/*  Dynamicky alokovany string                                                */
-/*  Vytvořil: RIchard Filo			                                          */
+/********************************* mystring.h *********************************/
+/*  Předmět: IFJ a IAL						              */
+/*  Dynamicky alokovaný string                                                */
+/*  Vytvořil: Richard Filo			                              */
 /* ************************************************************************** */
 /*
-**    stringCreate .... vytvori dynamicky alokovany string
-**    stringFree ... uvolni pamat
+**    stringCreate .... Vytvoří dynamicky alokovaný string
+**    stringFree ... Uvoľní pamäť
 **
 **/
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-                                  /* Hlavičky funkcí pro paci s stringem */
+                                  /* Hlavičky funkcí pro práci se stringem */
 
 void addChar(char* str, char c);
 char* stringCreate(const char* s);

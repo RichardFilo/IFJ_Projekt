@@ -1,16 +1,16 @@
 
 /* ****************************** stackINT.c ******************************** */
-/*  Předmět: IFJ a IAL						                                  */
-/*  Zásobník integerov v poli                                     			  */
-/*  Vytvořil: RIchard Filo			                                          */
+/*  Předmět: IFJ a IAL				                              */
+/*  Zásobník integerov v poli                  				      */
+/*  Vytvořil: Richard Filo			                              */
 /* ************************************************************************** */
 /*
-**    stackInit .... inicializace zásobníku
-**    stackEmpty ... test na prázdnost zásobníku
-**    stackFull .... test na zaplněnost zásobníku
-**    stackTop ..... přečte hodnotu z vrcholu zásobníku
-**    stackPop ..... odstraní prvek z vrcholu zásobníku
-**    stackPush .... vloží prvku do zásobníku
+**    stackInit .... Inicializace zásobníku
+**    stackEmpty ... Test na prázdnost zásobníku
+**    stackFull .... Test na zaplněnost zásobníku
+**    stackTop ..... Přečte hodnotu z vrcholu zásobníku
+**    stackPop ..... Odstraní prvek z vrcholu zásobníku
+**    stackPush .... Vloží prvku do zásobníku
 **
 **/
 
