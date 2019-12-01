@@ -43,6 +43,13 @@ int scannerInit(char* file){
         return -1;
     }
 
+    stackT=stackTokenInit();
+    if(stackT==NULL){
+        stackFree(stack);
+        fclose(input);
+        return -1;
+    }
+
     stackPush(stack,0);
     FTflag=1;
     return 0;
@@ -52,9 +59,10 @@ void scannerFree(){
 
     fclose(input);
     stackFree(stack);
+    stackTokenFree(stackT);
 }
 
-int getToken(){
+int getNextToken(){
 
     int c, i=0;
     int state=0;
@@ -421,4 +429,16 @@ int getToken(){
 
     token.type=TT_EOF;
     return -1;
+}
+
+int getToken(){
+    if(stackTokenEmpty(stackT)) return getNextToken();
+    else{
+        token=stackTokenPop(stackT);
+        return 0;
+    }
+}
+
+void ungetToken(){
+    stackTokenPush(stackT,token);
 }
