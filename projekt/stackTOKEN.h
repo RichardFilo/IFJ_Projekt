@@ -1,3 +1,17 @@
+/********************************* stackTOKEN.h *********************************/
+/*  Předmět: IFJ a IAL						 					                */
+/*  Zasobnik tokenov v poli                                     	            */
+/*  Vytvořil: Richard Filo			                               				*/
+/* **************************************************************************** */
+/*
+**    stackTokenInit .... Inicializace zásobníku
+**    stackTokenEmpty ... Test na prázdnost zásobníku
+**    stackTokenPop ..... Odstraní prvek z vrcholu zásobníku
+**    stackTokenPush .... Vloží prvku do zásobníku
+**	  stackTokenFree .... Uvolni pamat
+**
+**/
+
 #ifndef _STACKT_H_
 #define _STACKT_H_
 
