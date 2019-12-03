@@ -21,7 +21,6 @@
 
 
 	
-
 int FTflag;
 FILE* input;
 tStack* stack;

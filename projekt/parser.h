@@ -14,8 +14,11 @@
 
 #include "scanner.h"
 
+
+
                                   /* Hlavičky funkcí pro práci se stringem */
 int _exp();
+int checkSyntax();
 
 
 #endif

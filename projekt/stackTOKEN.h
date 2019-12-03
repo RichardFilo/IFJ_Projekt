@@ -69,7 +69,7 @@ typedef struct {
 	int top;                                /* index prvku na vrcholu zásobníku */
 } tStackToken;
 
-tToken token;
+tToken token, preToken;
 tStackToken* stackT;
 
                                   /* Hlavičky funkcí pro práci se zásobníkem. */

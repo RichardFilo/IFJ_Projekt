@@ -52,6 +52,7 @@ int scannerInit(char* file){
 
     stackPush(stack,0);
     FTflag=1;
+    preToken.type=1000;
     return 0;
 }
 
@@ -67,6 +68,7 @@ int getNextToken(){
     int c, i=0;
     int state=0;
     char buffer[1000]={0};
+    preToken=token;
 
     while((c=fgetc(input))!=-1){
 
@@ -428,7 +430,7 @@ int getNextToken(){
     }
 
     token.type=TT_EOF;
-    return -1;
+    return 0;
 }
 
 int getToken(){
@@ -441,4 +443,5 @@ int getToken(){
 
 void ungetToken(){
     stackTokenPush(stackT,token);
+    token=preToken;
 }

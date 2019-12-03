@@ -33,6 +33,12 @@ int main(int argc, char* argv[]){
 	}
 	else if(scannerInit("stdin")) return 99;
 
+
+    if(getToken()!=0){
+        scannerFree();
+        return 1;
+    }
+
 	int r=_exp();
 	scannerFree();
     return r;

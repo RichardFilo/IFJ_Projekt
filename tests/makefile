@@ -1,12 +1,14 @@
 CC=gcc
 CFLAGS = -g -Wall
-TARGETS = LAtest SAtestExp
+TARGETS = LAtest SAtestExp SAtest
 
 all: $(TARGETS)
 
 LAtest: stackTOKEN.o stackINT.o mystring.o scanner.o LAtest.c
 
 SAtestExp: parser.o stackTOKEN.o stackINT.o mystring.o scanner.o SAtestExp.c
+
+SAtest: parser.o stackTOKEN.o stackINT.o mystring.o scanner.o SAtest.c
 
 parser.o: ../projekt/parser.c
 	$(CC) $(CFLAGS) -c $<
