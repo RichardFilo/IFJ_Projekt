@@ -1,8 +1,8 @@
 
 /******************************** mystring.c **********************************/
-/*  Předmět: IFJ a IAL						              */
+/*  Předmět: IFJ a IAL						                                  */
 /*  Dynamicky alokovaný string                                                */
-/*  Vytvořil: Richard Filo			                              */
+/*  Vytvořil: Richard Filo			                                          */
 /* ************************************************************************** */
 /*
 **    stringCreate .... Vytvoří dynamicky alokovaný string

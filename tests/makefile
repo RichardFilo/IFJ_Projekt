@@ -8,7 +8,10 @@ LAtest: stackTOKEN.o stackINT.o mystring.o scanner.o LAtest.c
 
 SAtestExp: parser.o stackTOKEN.o stackINT.o mystring.o scanner.o SAtestExp.c
 
-SAtest: parser.o stackTOKEN.o stackINT.o mystring.o scanner.o SAtest.c
+SAtest: symtable.o parser.o stackTOKEN.o stackINT.o mystring.o scanner.o SAtest.c
+
+symtable.o: ../projekt/symtable.c
+	$(CC) $(CFLAGS) -c $<
 
 parser.o: ../projekt/parser.c
 	$(CC) $(CFLAGS) -c $<

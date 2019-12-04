@@ -182,7 +182,7 @@ int _exp(){
     int a=top(stackExp),b=getNumber(token.type);
     if(b==-1){
         stackFree(stackExp);
-        fprintf(stderr,"ERROR 2: Zle zapisany vyraz1\n");
+        fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
         return 2;
     }
     do{
@@ -197,7 +197,7 @@ int _exp(){
                 b=getNumber(token.type);
                 if(b==-1){
                     stackFree(stackExp);
-                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz2\n");
+                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
                     return 2;
                 }
                 break;
@@ -216,19 +216,19 @@ int _exp(){
                 b=getNumber(token.type);
                 if(b==-1){
                     stackFree(stackExp);
-                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz3\n");
+                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
                     return 2;
                 }
                 break;
             case 22:
                 if(swapRule(stackExp)){
                     stackFree(stackExp);
-                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz4\n");
+                    fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
                     return 2;
                 }
                 break;
             default:
-                fprintf(stderr,"ERROR 2: Zle zapisany vyraz5\n");
+                fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
                 return 1;
         }
         a=top(stackExp);
@@ -273,7 +273,7 @@ int term(){
             }
             printf("Pokryl som TERM %d\n",token.type);
             return 0;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre volanej funkcie\n"); return 1;
     }
 }
 
@@ -290,7 +290,7 @@ int term_n(){
             return !(term()==0 && term_n()==0);
         case TT_RIGHT_BRACKET:
             return 0;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre volanej funkcie\n"); return 1;
     }
 }
 
@@ -304,7 +304,7 @@ int terms(){
         case TT_VALUE_STRING:
         case TT_NONE: return !(term()==0 && term_n()==0);
         case TT_RIGHT_BRACKET: return 0;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre volanej funkcie\n"); return 1;
     }
 }
 
@@ -330,7 +330,7 @@ int param_n(){
             return 1;
         case TT_RIGHT_BRACKET:
             return 0;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre funkcie\n"); return 1;
     }
 }
 
@@ -347,7 +347,7 @@ int params(){
             return param_n();
         case TT_RIGHT_BRACKET:
             return 0;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre funkcie\n"); return 1;
     }
 }
 
@@ -402,6 +402,7 @@ int value(){
             }
         default: 
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz\n");
             return 1;
     }
 }
@@ -434,7 +435,7 @@ int state(){
             }
             printf("Pokryl som = %d\n",token.type);
             return value();
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisany prikaz\n"); return 1;
     } 
 }
 
@@ -522,6 +523,7 @@ int line(){
             }
             else return 1;
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz (chybajuci EOL)\n");
             return 1;
         case TT_PASS:
             if(getToken()!=0){
@@ -538,6 +540,7 @@ int line(){
                 return 0;
             }
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz PASS\n");
             return 1;
         case TT_RETURN:
             if(getToken()!=0){
@@ -557,6 +560,7 @@ int line(){
             }
             else return 1;
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz RETURN\n");
             return 1;
         case TT_IF:
             if(getToken()!=0){
@@ -648,6 +652,7 @@ int line(){
                     return 1;
             }
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz IF\n");
             return 1;
         case TT_WHILE:
             if(getToken()!=0){
@@ -701,6 +706,7 @@ int line(){
                     return 1;
             }
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisany prikaz WHILE\n");
             return 1;
         case TT_DEF:
             if(getToken()!=0){
@@ -765,8 +771,9 @@ int line(){
                 }
             }
             _errNumber=2;
+            fprintf(stderr,"ERROR 2: Zle zapisana deklaracia funkcie\n");
             return 1;
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Neznamy prikaz\n"); return 1;
     }
 }
 
@@ -787,7 +794,7 @@ int line_n(){
         case TT_IF:
         case TT_WHILE:
         case TT_DEF: return !(line()==0 && line_n()==0);
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Neznamy prikaz\n"); return 1;
     }    
 }
 
@@ -806,7 +813,7 @@ int body(){
         case TT_IF:
         case TT_WHILE:
         case TT_DEF: return !(line()==0 && line_n()==0);
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Neznamy prikaz\n"); return 1;
     }
 }
 
@@ -830,6 +837,6 @@ int checkSyntax(){
         case TT_IF:
         case TT_WHILE:
         case TT_DEF: return body();
-        default: _errNumber=2; return 1;
+        default: _errNumber=2; fprintf(stderr,"ERROR 2: Neznamy prikaz\n"); return 1;
     }
 }

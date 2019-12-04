@@ -1,8 +1,8 @@
 
 /* ******************************* stackINT.h ******************************* */
-/*  Předmět: IFJ a IAL			 	                              */
+/*  Předmět: IFJ a IAL			 	                                          */
 /*  Zásobník integerov v poli                                                 */
-/*  Vytvořil: Richard Filo			                              */
+/*  Vytvořil: Richard Filo			                                          */
 /* ************************************************************************** */
 /*
 **    stackInit .... Inicializace zásobníku
