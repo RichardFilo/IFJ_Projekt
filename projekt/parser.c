@@ -476,7 +476,7 @@ int line(){
             _errNumber=1;
             return 1;
         }
-        if(getNumber(token.type)>=2 && getNumber(token.type)<=12){
+        if((getNumber(token.type)>=2 && getNumber(token.type)<=12)|| token.type==TT_EOL){
             ungetToken();
             switch(_exp()){
                 case 0:
