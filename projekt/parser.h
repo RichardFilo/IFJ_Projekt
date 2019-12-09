@@ -13,7 +13,7 @@
 #define _PARSER_H_
 
 #include "scanner.h"
-
+#include "symtable.h"
                                   /* Hlavičky funkcí pro práci se stringem */
 int _exp();
 int checkSyntax();

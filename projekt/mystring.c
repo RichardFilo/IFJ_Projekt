@@ -33,3 +33,26 @@ void stringFree(char* s){
     free(s);
 }
 
+char* stringInit(){
+
+    char* new=malloc(1);
+    if(new==NULL){
+        fprintf(stderr,"ERROR 99: Chyba alokace pamate\n");
+        return NULL;
+    }
+    *new = 0;
+    return new;
+}
+
+char* addString(char* src, char* dest){
+
+    char* new=malloc( strlen(src) + strlen(dest) + 1 );
+    if(new==NULL){
+        fprintf(stderr,"ERROR 99: Chyba alokace pamate\n");
+        return NULL;
+    }
+    strcpy(new,src);
+    strcat(new,dest);
+    free(src);
+    return new;
+}

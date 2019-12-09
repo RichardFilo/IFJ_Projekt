@@ -34,7 +34,7 @@
 typedef char* tKey;
 
 /* typ obsahu (například cena zboží) */
-typedef float tData;
+typedef int tData;
 
 /*Datová položka TRP s explicitně řetězenými synonymy*/
  typedef struct tHTItem{

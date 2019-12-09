@@ -1,6 +1,7 @@
 #include"../projekt/parser.h"
 
 extern int _errNumber;
+extern char* code;
 
 int main(int argc, char* argv[]){
 
@@ -10,7 +11,9 @@ int main(int argc, char* argv[]){
 	else if(scannerInit("stdin")) return 99;
 
 
-    if(checkSyntax()==0) printf("Syntax je OK\n");
+    if(checkSyntax()==0) printf("%s",code);
+	stringFree(code);
 	scannerFree();
     return _errNumber;
+
 }

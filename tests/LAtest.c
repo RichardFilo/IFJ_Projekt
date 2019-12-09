@@ -33,13 +33,14 @@ int main(int argc, char* argv[]){
 	}
 	else if(scannerInit("stdin")) return 99;
 
-	int vrat=0;
-	int t;
-	while((t=getToken())==0){
+	if(getToken()==1) {
+		scannerFree();
+		return 1;
+	}
+	while(token.type!=TT_EOF){
 		
 		if(token.type==1) {
 			printf("ID:%s\n",token._string);
-			if(!vrat) stringFree(token._string);
 		}
 		
 		else if(token.type==2){
@@ -50,7 +51,6 @@ int main(int argc, char* argv[]){
 		}
 		else if(token.type==4){
 			printf("STRING:'%s'\n",token._string);
-			if(!vrat) stringFree(token._string);
 		}
 		else if(token.type==5){
 			printf("KW:def\n");
@@ -132,17 +132,12 @@ int main(int argc, char* argv[]){
 		}
 		else printf("Neznamy Token!!!\n");
 		
-		if(vrat) {
-			vrat=0;
-			ungetToken();
+		if(getToken()==1) {
+			scannerFree();
+			return 1;
 		}
 	}
-	if(t==1) {
-		scannerFree();
-		return 1;
-	}
-	else if(t==-1) printf("KONIEC\n");
-	scannerFree();
 
+	scannerFree();
 	return 0;
 }

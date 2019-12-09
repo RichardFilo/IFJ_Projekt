@@ -63,11 +63,20 @@ void scannerFree(){
     stackTokenFree(stackT);
 }
 
+int isNUM(int pole[3]){
+    if(isdigit(pole[0]) && isdigit(pole[1])){
+        pole[0]=(pole[0]-'0')*10+(pole[1]-'0');
+        return 1;
+    }
+    return 0;
+}
+
 int getNextToken(){
 
     int c, i=0;
     int state=0;
     char buffer[1000]={0};
+    int num[3]={0};
     preToken=token;
 
     while((c=fgetc(input))!=-1){
@@ -205,6 +214,28 @@ int getNextToken(){
                 else if(c=='\n'){
                     fprintf(stderr,"ERROR 1: Neukonceny retazcovy literal\n");
                     return 1;
+                }
+                else if(c=='\\'){
+                    c=fgetc(input);
+                    switch(c){
+                        case '"':
+                        case '\'':
+                        case '\\': addChar(buffer,c); break;
+                        case 't': addChar(buffer,'\t'); break;
+                        case 'n': addChar(buffer,'\n'); break;
+                        case 'x':
+                            num[0]=fgetc(input);
+                            num[1]=fgetc(input);
+                            if(isNUM(num)) addChar(buffer,num[0]);
+                            else{
+                                fprintf(stderr,"ERROR 1: Zly format escape sekvence \\xXX\n");
+                                return 1;
+                            }
+                            break;
+                        default:
+                            ungetc(c,input);
+                            addChar(buffer,'\\');
+                    }
                 }
                 else{
                     addChar(buffer,c);

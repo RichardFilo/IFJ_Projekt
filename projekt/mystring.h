@@ -23,6 +23,8 @@
 void addChar(char* str, char c);
 char* stringCreate(const char* s);
 void stringFree(char* s);
+char* stringInit();
+char* addString(char* src, char* dest);
 
 
 #endif
