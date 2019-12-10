@@ -65,7 +65,7 @@
 	} tToken;
                              /* ADT zásobník implementovaný ve statickém poli */
 typedef struct {
-	tToken arr[2];                             /* pole pro uložení hodnot */
+	tToken arr[5];                             /* pole pro uložení hodnot */
 	int top;                                /* index prvku na vrcholu zásobníku */
 } tStackToken;
 

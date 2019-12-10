@@ -19,7 +19,6 @@
 #include"mystring.h"
 #include<ctype.h>
 
-
 	
 int FTflag;
 FILE* input;

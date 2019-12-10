@@ -84,11 +84,10 @@ int htInsert ( tHTable* ptrht, tKey key, tData data ) {
 	return 0;
 }
 
-tData* htRead ( tHTable* ptrht, tKey key ) {
+tData htRead ( tHTable* ptrht, tKey key ) {
 
 	tHTItem* tmp = htSearch(ptrht,key);
-	if(tmp==NULL) return NULL;
-	return &(tmp->data);
+	return tmp->data;
 }
 
 void htDelete ( tHTable* ptrht, tKey key ) {

@@ -56,7 +56,7 @@ tHTItem* htSearch ( tHTable* ptrht, tKey key );
 
 int htInsert ( tHTable* ptrht, tKey key, tData data );
 
-tData* htRead ( tHTable* ptrht, tKey key );
+tData htRead ( tHTable* ptrht, tKey key );
 
 void htDelete ( tHTable* ptrht, tKey key );
 
