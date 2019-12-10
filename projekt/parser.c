@@ -12,7 +12,7 @@
 #include "parser.h"
 
 
-int _errNumber=0,frame=0,typExp=0;
+int _errNumber=0,frame=0,typExp=0,termsCount=0;
 tHTable* GFfunc;
 tHTable* GFvar;
 tHTable* LFfunc[50];
@@ -59,71 +59,243 @@ int top(tStack* s){
 }
 
 int generate(int rule){
+    int operand[2];
+    operand[0]=stackPop(stackTypes);
+    operand[1]=stackPop(stackTypes);
+    if(operand[0]==2 && operand[1]==3){
+        operand[0]=3;
+        code=addString(code,"CREATEFRAME\n");
+        code=addString(code,"DEFVAR TF@&1\n");
+        code=addString(code,"POPS TF@&1\n");
+        code=addString(code,"INT2FLOAT TF@&1 TF@&1\n");
+        code=addString(code,"PUSHS TF@&1\n");
+    }
+    if(operand[0]==3 && operand[1]==2){
+        operand[1]=3;
+        code=addString(code,"CREATEFRAME\n");
+        code=addString(code,"DEFVAR TF@&1\n");
+        code=addString(code,"DEFVAR TF@&2\n");
+        code=addString(code,"POPS TF@&1\n");
+        code=addString(code,"POPS TF@&2\n");
+        code=addString(code,"INT2FLOAT TF@&2 TF@&2\n");
+        code=addString(code,"PUSHS TF@&2\n");
+        code=addString(code,"PUSHS TF@&1\n");
+    }
+    if(operand[0] != operand[1]){
+        if(rule==12){
+            stackPush(stackTypes,5);
+            code=addString(code,"CREATEFRAME\n");
+            code=addString(code,"DEFVAR TF@&1\n");
+            code=addString(code,"DEFVAR TF@&2\n");
+            code=addString(code,"POPS TF@&1\n");
+            code=addString(code,"POPS TF@&2\n");
+            code=addString(code,"PUSHS bool@false\n");
+            return 0;
+        }
+        if(rule==13){
+            stackPush(stackTypes,5);
+            code=addString(code,"CREATEFRAME\n");
+            code=addString(code,"DEFVAR TF@&1\n");
+            code=addString(code,"DEFVAR TF@&2\n");
+            code=addString(code,"POPS TF@&1\n");
+            code=addString(code,"POPS TF@&2\n");
+            code=addString(code,"PUSHS bool@true\n");
+            return 0;
+        }
+        fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+        _errNumber=4;
+        return 1;
+    }
     switch (rule){
         case 3:
+            if(operand[0]==2){
+                stackPush(stackTypes,2);
+                code=addString(code,"ADDS\n");
+            }
+            else if(operand[0]==3){
+                stackPush(stackTypes,3);
+                code=addString(code,"ADDS\n");
+            }
+            else if(operand[0]==4){
+                stackPush(stackTypes,4);
+                code=addString(code,"CREATEFRAME\n");
+                code=addString(code,"DEFVAR TF@&1\n");
+                code=addString(code,"DEFVAR TF@&2\n");
+                code=addString(code,"DEFVAR TF@&3\n");
+                code=addString(code,"POPS TF@&1\n");
+                code=addString(code,"POPS TF@&2\n");
+                code=addString(code,"CONCAT TF@&3 TF@&2 TF@&1\n");
+                code=addString(code,"PUSHS TF@&3\n");
+            }
+            else{
+            fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+            _errNumber=4;
+            return 1;
+            }
+            break;
         case 4:
+            if(operand[0]==2){
+                stackPush(stackTypes,2);
+                code=addString(code,"SUBS\n");
+            }
+            else if(operand[0]==3){
+                stackPush(stackTypes,3);
+                code=addString(code,"SUBS\n");
+            }
+            else{
+            fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+            _errNumber=4;
+            return 1;
+            }
+            break;
         case 5:
+            if(operand[0]==2){
+                stackPush(stackTypes,2);
+                code=addString(code,"MULS\n");
+            }
+            else if(operand[0]==3){
+                stackPush(stackTypes,3);
+                code=addString(code,"MULS\n");
+            }
+            else{
+            fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+            _errNumber=4;
+            return 1;
+            }
+            break;
         case 6:
+            if(operand[0]==2){
+                stackPush(stackTypes,3);
+                code=addString(code,"CREATEFRAME\n");
+                code=addString(code,"DEFVAR TF@&1\n");
+                code=addString(code,"DEFVAR TF@&2\n");
+                code=addString(code,"DEFVAR TF@&3\n");
+                code=addString(code,"POPS TF@&1\n");
+                code=addString(code,"POPS TF@&2\n");
+                code=addString(code,"INT2FLOAT TF@&1 TF@&1\n");
+                code=addString(code,"INT2FLOAT TF@&2 TF@&2\n");
+                code=addString(code,"DIV TF@&3 TF@&2 TF@&1\n");
+                code=addString(code,"PUSHS TF@&3\n");
+            }
+            else if(operand[0]==3){
+                stackPush(stackTypes,3);
+                code=addString(code,"DIVS\n");
+            }
+            else{
+            fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+            _errNumber=4;
+            return 1;
+            }
+            break;
         case 7:
+            if(operand[0]==2){
+                stackPush(stackTypes,2);
+                code=addString(code,"IDIVS\n");
+            }
+            else{
+            fprintf(stderr,"ERROR 4: Chybna kombinace datovych typu\n");
+            _errNumber=4;
+            return 1;
+            }
+            break;
         case 8:
+            stackPush(stackTypes,5);
+            code=addString(code,"LTS\n");
+            break;
         case 9:
+            stackPush(stackTypes,5);
+            code=addString(code,"CREATEFRAME\n");
+            code=addString(code,"DEFVAR TF@&1\n");
+            code=addString(code,"DEFVAR TF@&2\n");
+            code=addString(code,"DEFVAR TF@&3\n");
+            code=addString(code,"DEFVAR TF@&4\n");
+            code=addString(code,"POPS TF@&1\n");
+            code=addString(code,"POPS TF@&2\n");
+            code=addString(code,"LT TF@&3 TF@&2 TF@&1\n");
+            code=addString(code,"EQ TF@&4 TF@&2 TF@&1\n");
+            code=addString(code,"OR TF@&2 TF@&3 TF@&4\n");
+            code=addString(code,"PUSHS TF@&2\n");
+            break;
         case 10:
+            stackPush(stackTypes,5);
+            code=addString(code,"GTS\n");
+            break;
         case 11:
-        case 13: return 0;
+            stackPush(stackTypes,5);
+            code=addString(code,"CREATEFRAME\n");
+            code=addString(code,"DEFVAR TF@&1\n");
+            code=addString(code,"DEFVAR TF@&2\n");
+            code=addString(code,"DEFVAR TF@&3\n");
+            code=addString(code,"DEFVAR TF@&4\n");
+            code=addString(code,"POPS TF@&1\n");
+            code=addString(code,"POPS TF@&2\n");
+            code=addString(code,"GT TF@&3 TF@&2 TF@&1\n");
+            code=addString(code,"EQ TF@&4 TF@&2 TF@&1\n");
+            code=addString(code,"OR TF@&2 TF@&3 TF@&4\n");
+            code=addString(code,"PUSHS TF@&2\n");
+            break;
+        case 12:
+            stackPush(stackTypes,5);
+            code=addString(code,"EQS\n");
+            break;
+        case 13:
+            stackPush(stackTypes,5);
+            code=addString(code,"EQS\nNOTS\n");
+            break;
     }
     return 0;
 }
 
 int isRule(int rule[3]){
     if(rule[0]==14 && rule[1]==15 && rule[2]==13){
-       printf("pravidlo: 2\n");
+   //printf("pravidlo: 2\n");
         return 0;
     }
     else if(rule[0]==15 && rule[2]==15){
         switch (rule[1])
         {
         case 2:
-           printf("pravidlo: 3\n");
+       //printf("pravidlo: 3\n");
             return generate(3);
             break;
         case 3:
-           printf("pravidlo: 4\n");
+       //printf("pravidlo: 4\n");
             return generate(4);
             break;
         case 4:
-           printf("pravidlo: 5\n");
+       //printf("pravidlo: 5\n");
             return generate(5);
             break;
         case 5:
-           printf("pravidlo: 6\n");
+       //printf("pravidlo: 6\n");
             return generate(6);
             break;
         case 6:
-           printf("pravidlo: 7\n");
+       //printf("pravidlo: 7\n");
             return generate(7);
             break;
         case 7:
-           printf("pravidlo: 8\n");
+       //printf("pravidlo: 8\n");
             return generate(8);
             break;
         case 8:
-           printf("pravidlo: 9\n");
+       //printf("pravidlo: 9\n");
             return generate(9);
             break;
         case 9:
-           printf("pravidlo: 10\n");
+       //printf("pravidlo: 10\n");
             return generate(10);
             break;
         case 10:
-           printf("pravidlo: 11\n");
+       //printf("pravidlo: 11\n");
             return generate(11);
             break;
         case 11:
-           printf("pravidlo: 12\n");
+       //printf("pravidlo: 12\n");
             return generate(12);
             break;
         case 12:
-           printf("pravidlo: 13\n");
+       //printf("pravidlo: 13\n");
             return generate(13);
             break;
         default:
@@ -155,35 +327,76 @@ int swapRule(tStack* s){
     stackPop(s);
     if(count==1){
         if(rule[0]==1){
-           printf("pravidlo: 1\n");
+       //printf("pravidlo: 1\n");
             stackPush(s,15);
-            printf("token:%d\n",preToken.type);
+            char buffer[1000]={0};
+        //printf("token:%d\n",preToken.type);
             if(preToken.type==1){
                 if(frame>0){
-                    printf("Search in LF for key:%s\n",preToken._string);
+                //printf("Search in LF for key:%s\n",preToken._string);
                     if(htSearch(LFvar[frame-1],preToken._string)==NULL){
-                        printf("LF nie\n");
-                        printf("Search in GF for key:%s\n",preToken._string);
+                    //printf("LF nie\n");
+                    //printf("Search in GF for key:%s\n",preToken._string);
                         if(htSearch(GFvar,preToken._string)==NULL){
                             fprintf(stderr,"ERROR 3: Nedefinovana premenna\n");
                             _errNumber=3;
                             return 1;
                         }
-                        else stackPush(stackTypes,htRead(GFvar,preToken._string));
+                        else {
+                            stackPush(stackTypes,htRead(GFvar,preToken._string));
+                            sprintf(buffer,"PUSHS GF@%s\n",preToken._string);
+                            code=addString(code,buffer);                  
+                        }
                     }
-                    else stackPush(stackTypes,htRead(LFvar[frame-1],preToken._string));
+                    else {
+                        stackPush(stackTypes,htRead(LFvar[frame-1],preToken._string));
+                        sprintf(buffer,"PUSHS LF@%s\n",preToken._string);
+                        code=addString(code,buffer);
+                    }
                 }
                 else{
-                    printf("Search in GF for key:%s\n",preToken._string);
+                //printf("Search in GF for key:%s\n",preToken._string);
                     if(htSearch(GFvar,preToken._string)==NULL){
                         fprintf(stderr,"ERROR 3: Nedefinovana premenna\n");
                         _errNumber=3;
                         return 1;
                     }
-                    else stackPush(stackTypes,htRead(GFvar,preToken._string));
+                    else {
+                        stackPush(stackTypes,htRead(GFvar,preToken._string));
+                        sprintf(buffer,"PUSHS GF@%s\n",preToken._string);
+                        code=addString(code,buffer);
+                    }
                 }
             }
-            else stackPush(stackTypes,preToken.type);
+            else {
+                stackPush(stackTypes,preToken.type);
+                if(stackTop(stackTypes)==2){
+                    sprintf(buffer,"PUSHS int@%d\n",preToken._int);
+                    code=addString(code,buffer);
+                }
+                else if(stackTop(stackTypes)==3){
+                    sprintf(buffer,"PUSHS float@%a\n",preToken._float);
+                    code=addString(code,buffer);
+                }
+                else if(stackTop(stackTypes)==4){
+                    code=addString(code,"PUSHS string@");
+                    for(int i=0;preToken._string[i]!=0;i++){
+                        if(preToken._string[i]==35||preToken._string[i]==92||(preToken._string[i]<=32 && preToken._string[i]>0)){
+                            sprintf(buffer,"\\0%d",preToken._string[i]);
+                            code=addString(code,buffer);
+                        }
+                        else {
+                            sprintf(buffer,"%c",preToken._string[i]);
+                            code=addString(code,buffer);
+                        }
+                    }
+                    code=addString(code,"\n");
+                }
+                else {
+                    sprintf(buffer,"PUSHS int@%d\n",preToken._int);
+                    code=addString(code,"PUSHS nil@nil\n");
+                }
+            }
         }
         else  {
             fprintf(stderr,"ERROR 2: Zle zapisany vyraz\n");
@@ -206,7 +419,7 @@ int swapRule(tStack* s){
 
 int _exp(){
     
-   printf("Vchadzam do exp %d\n",token.type);
+//printf("Vchadzam do exp %d\n",token.type);
 
     int my_exp_table[15][15]={
     //    $   t   +   -   *   /   //  <   <=  >   >=  ==  !=  (   ) 
@@ -251,7 +464,7 @@ int _exp(){
         return 1;
     }
     do{
-       printf("a=%d b=%d exp=%d\n",a,b,my_exp_table[a][b]);
+   //printf("a=%d b=%d exp=%d\n",a,b,my_exp_table[a][b]);
         switch(my_exp_table[a][b]){
             case 23:
                 stackPush(stackExp,b);
@@ -307,6 +520,9 @@ int _exp(){
     typExp=stackPop(stackTypes);
     stackFree(stackExp);
     stackFree(stackTypes);
+    code=addString(code,"CREATEFRAME\n");
+    code=addString(code,"DEFVAR TF@&1\n");
+    code=addString(code,"POPS TF@&1\n");
     return 0;
 }
 
@@ -314,52 +530,68 @@ int body();
 
 int ret(){
 
-   printf("Vchadzam do ret %d\n",token.type);
+//printf("Vchadzam do ret %d\n",token.type);
     if(token.type==TT_EOL) return 0;
-    switch(_exp()){
-        case 0:
-            return 0;
-        case 1:
-            _errNumber=1;
-            return 1;
-        case 2:
-            _errNumber=2;
-            return 2;
-        default:
-            _errNumber=99;
-            return 1;
-    }
+    return _exp();
 }
 
 int term(){
 
-   printf("Vchadzam do term %d\n",token.type);
+    char buffer[1000];
+    termsCount++;
+//printf("Vchadzam do term %d\n",token.type);
     switch(token.type){
         case TT_ID:
+            sprintf(buffer,"DEFVAR TF@&%d\nMOVE TF@&%d GF@%s\n",termsCount,termsCount,token._string);
+            code=addString(code,buffer);
+            break;
         case TT_VALUE_INT:
+            sprintf(buffer,"DEFVAR TF@&%d\nMOVE TF@&%d int@%d\n",termsCount,termsCount,token._int);
+            code=addString(code,buffer);
+            break;
         case TT_VALUE_DOUBLE:
+            sprintf(buffer,"DEFVAR TF@&%d\nMOVE TF@&%d float@%a\n",termsCount,termsCount,token._float);
+            code=addString(code,buffer);
+            break;
         case TT_VALUE_STRING:
-        case TT_NONE:
-            if(getToken()!=0){
-                _errNumber=1;
-                return 1;
+            sprintf(buffer,"DEFVAR TF@&%d\nMOVE TF@&%d string@",termsCount,termsCount);
+            code=addString(code,buffer);
+            for(int i=0;token._string[i]!=0;i++){
+                if(token._string[i]==35||token._string[i]==92||(token._string[i]<=32 && token._string[i]>0)){
+                    sprintf(buffer,"\\0%d",token._string[i]);
+                    code=addString(code,buffer);
+                }
+                else {
+                    sprintf(buffer,"%c",token._string[i]);
+                    code=addString(code,buffer);
+                }
             }
-           printf("Pokryl som TERM %d\n",token.type);
-            return 0;
+            code=addString(code,"\n");
+            break;
+        case TT_NONE:
+            sprintf(buffer,"DEFVAR TF@&%d\nMOVE TF@&%d nil@nil\n",termsCount,termsCount);
+            code=addString(code,buffer);
+            break;
         default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisane parametre volanej funkcie\n"); return 1;
     }
+    if(getToken()!=0){
+        _errNumber=1;
+        return 1;
+    }
+ //printf("Pokryl som TERM %d\n",token.type);
+    return 0;
 }
 
 int term_n(){
 
-   printf("Vchadzam do term_n %d\n",token.type);
+//printf("Vchadzam do term_n %d\n",token.type);
     switch(token.type){
         case TT_COMMA:
             if(getToken()!=0){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som , %d\n",token.type);
+       //printf("Pokryl som , %d\n",token.type);
             return !(term()==0 && term_n()==0);
         case TT_RIGHT_BRACKET:
             return 0;
@@ -369,7 +601,7 @@ int term_n(){
 
 int terms(){
 
-   printf("Vchadzam do terms %d\n",token.type);
+//printf("Vchadzam do terms %d\n",token.type);
     switch(token.type){
         case TT_ID:
         case TT_VALUE_INT:
@@ -383,20 +615,20 @@ int terms(){
 
 int param_n(){
 
-   printf("Vchadzam do param_n %d\n",token.type);
+//printf("Vchadzam do param_n %d\n",token.type);
     switch(token.type){
         case TT_COMMA:
             if(getToken()!=0){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som , %d\n",token.type);
+       //printf("Pokryl som , %d\n",token.type);
             if(token.type==TT_ID){
                 if(getToken()!=0){
                     _errNumber=1;
                     return 1;
                 }
-               printf("Pokryl som ID %d\n",token.type);
+           //printf("Pokryl som ID %d\n",token.type);
                 return param_n();
             }
             _errNumber=2;
@@ -409,14 +641,14 @@ int param_n(){
 
 int params(){
 
-   printf("Vchadzam do params %d\n",token.type);
+//printf("Vchadzam do params %d\n",token.type);
     switch(token.type){
         case TT_ID:
             if(getToken()!=0){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som ID %d\n",token.type);
+       //printf("Pokryl som ID %d\n",token.type);
             return param_n();
         case TT_RIGHT_BRACKET:
             return 0;
@@ -426,8 +658,9 @@ int params(){
 
 int value(char* id){
 
-   printf("Vchadzam do value %d\n",token.type);
+//printf("Vchadzam do value %s %d\n",id,token.type);
     if(token.type==TT_ID){
+        char* funcId=token._string;
         if(getToken()!=0){
             _errNumber=1;
             return 1;
@@ -437,15 +670,25 @@ int value(char* id){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som ID %d\n",token.type);
-           printf("Pokryl som ( %d\n",token.type);
+       //printf("Pokryl som ID %d\n",token.type);
+        //printf("Pokryl som ( %d\n",token.type);
+            termsCount=0;
+            code=addString(code,"CREATEFRAME\n");
             if(terms()==0){
                 if(token.type==TT_RIGHT_BRACKET){
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                   printf("Pokryl som ) %d\n",token.type);
+                  //printf("%s %d\n",id, termsCount);
+                    if(strcmp(funcId,"print")==0){
+                        char buffer[1000];
+                        for(int i=0;i<termsCount;i++){
+                            sprintf(buffer,"WRITE TF@&%d\n",i+1);
+                            code=addString(code,buffer);
+                        }
+                    }
+               //printf("Pokryl som ) %d\n",token.type);
                     return 0;
                 }
             }
@@ -461,8 +704,26 @@ int value(char* id){
         case TT_VALUE_STRING:
         case TT_NONE: 
             if(_exp()==0){
-                if(frame==0) htInsert(GFvar,id,typExp);
-                else htInsert(LFvar[frame-1],id,typExp);
+                char buffer[1000];
+                if(frame==0) {
+                    if(htSearch(GFvar,id)==NULL){
+                        sprintf(buffer,"DEFVAR GF@%s\n",id);
+                        code=addString(code,buffer);
+                    }
+                    sprintf(buffer,"MOVE GF@%s TF@&1\n",id);
+                    code=addString(code,buffer);
+                    htInsert(GFvar,id,typExp);
+
+                }
+                else {
+                    if(htSearch(GFvar,id)==NULL){
+                        sprintf(buffer,"DEFVAR LF@%s\n",id);
+                        code=addString(code,buffer);
+                    }
+                    sprintf(buffer,"MOVE LF@%s TF@&1\n",id);
+                    code=addString(code,buffer);
+                    htInsert(LFvar[frame-1],id,typExp);
+                }
                 return 0;
             }
             else return 1;
@@ -475,21 +736,31 @@ int value(char* id){
 
 int state(char* id){
 
-   printf("Vchadzam do state %d\n",token.type);
+//printf("Vchadzam do state %s %d\n",id,token.type);
     switch(token.type){
         case TT_LEFT_BRACKET:
             if(getToken()!=0){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som ( %d\n",token.type);
+            termsCount=0;
+            code=addString(code,"CREATEFRAME\n");
+       //printf("Pokryl som ( %d\n",token.type);
             if(terms()==0){
                 if(token.type==TT_RIGHT_BRACKET){
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                   printf("Pokryl som ) %d\n",token.type);
+                //printf("%s %d\n",id, termsCount);
+                    if(strcmp(id,"print")==0){
+                        char buffer[1000];
+                        for(int i=0;i<termsCount;i++){
+                            sprintf(buffer,"WRITE TF@&%d\n",i+1);
+                            code=addString(code,buffer);
+                        }
+                    }
+               //printf("Pokryl som ) %d\n",token.type);
                     return 0;
                 }
             }
@@ -499,7 +770,7 @@ int state(char* id){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som = %d\n",token.type);
+       //printf("Pokryl som = %d\n",token.type);
             return value(id);
         default: _errNumber=2; fprintf(stderr,"ERROR 2: Zle zapisany prikaz\n"); return 1;
     } 
@@ -507,7 +778,7 @@ int state(char* id){
 
 int line(){
 
-   printf("Vchadzam do line %d\n", token.type);
+//printf("Vchadzam do line %d\n", token.type);
     switch(token.type){
         case TT_LEFT_BRACKET:
         case TT_VALUE_INT:
@@ -556,14 +827,14 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som ID %d\n",token.type);
+       //printf("Pokryl som ID %s %d\n",id,token.type);
             if(state(id)==0){
                 if(token.type==TT_EOL) {
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                   printf("Pokryl som EOL %d\n",token.type);
+               //printf("Pokryl som EOL %d\n",token.type);
                     return 0;
                 } 
             }
@@ -576,13 +847,13 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som PASS %d\n",token.type);
+       //printf("Pokryl som PASS %d\n",token.type);
             if(token.type==TT_EOL){
                 if(getToken()!=0){
                     _errNumber=1;
                     return 1;
                 }
-               printf("Pokryl som EOL %d\n",token.type);
+           //printf("Pokryl som EOL %d\n",token.type);
                 return 0;
             }
             _errNumber=2;
@@ -593,14 +864,14 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som RETURN %d\n",token.type);
+       //printf("Pokryl som RETURN %d\n",token.type);
             if(ret()==0){
                 if(token.type==TT_EOL) {
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                   printf("Pokryl som EOL %d\n",token.type);
+               //printf("Pokryl som EOL %d\n",token.type);
                     if(frame==0){
                         _errNumber=6;
                         fprintf(stderr,"ERROR 6: RETURN na globalnej urovni\n");
@@ -618,64 +889,64 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som IF %d\n",token.type);
+       //printf("Pokryl som IF %d\n",token.type);
             if(_exp()==0){
                 if(token.type==TT_COLON){
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                    printf("Pokryl som COLON %d\n",token.type);
+                //printf("Pokryl som COLON %d\n",token.type);
                     if(token.type==TT_EOL){
                         if(getToken()!=0){
                             _errNumber=1;
                             return 1;
                         }
-                        printf("Pokryl som EOL %d\n",token.type);
+                    //printf("Pokryl som EOL %d\n",token.type);
                         if(token.type==TT_INDENT){
                             if(getToken()!=0){
                                 _errNumber=1;
                                 return 1;
                             }
-                            printf("Pokryl som INDENT %d\n",token.type);
+                        //printf("Pokryl som INDENT %d\n",token.type);
                             if(body()==0){
                                 if(token.type==TT_DEDENT){
                                     if(getToken()!=0){
                                         _errNumber=1;
                                         return 1;
                                     }
-                                    printf("Pokryl som DEDENT %d\n",token.type);
+                                //printf("Pokryl som DEDENT %d\n",token.type);
                                     if(token.type==TT_ELSE){
                                         if(getToken()!=0){
                                             _errNumber=1;
                                             return 1;
                                         }
-                                        printf("Pokryl som ELSE %d\n",token.type);
+                                    //printf("Pokryl som ELSE %d\n",token.type);
                                         if(token.type==TT_COLON){
                                             if(getToken()!=0){
                                                 _errNumber=1;
                                                 return 1;
                                             }
-                                            printf("Pokryl som COLON %d\n",token.type);
+                                        //printf("Pokryl som COLON %d\n",token.type);
                                             if(token.type==TT_EOL){
                                                 if(getToken()!=0){
                                                     _errNumber=1;
                                                     return 1;
                                                 }
-                                                printf("Pokryl som EOL %d\n",token.type);
+                                            //printf("Pokryl som EOL %d\n",token.type);
                                                 if(token.type==TT_INDENT){
                                                     if(getToken()!=0){
                                                         _errNumber=1;
                                                         return 1;
                                                     }
-                                                    printf("Pokryl som INDENT %d\n",token.type);
+                                                //printf("Pokryl som INDENT %d\n",token.type);
                                                     if(body()==0){
                                                         if(token.type==TT_DEDENT){
                                                             if(getToken()!=0){
                                                                 _errNumber=1;
                                                                 return 1;
                                                             }
-                                                            printf("Pokryl som DEDENT %d\n",token.type);
+                                                        //printf("Pokryl som DEDENT %d\n",token.type);
                                                             return 0;
                                                         }
                                                     }
@@ -700,33 +971,33 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som WHILE %d\n",token.type);
+       //printf("Pokryl som WHILE %d\n",token.type);
             if(_exp()==0){
                 if(token.type==TT_COLON){
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                    printf("Pokryl som COLON %d\n",token.type);
+                //printf("Pokryl som COLON %d\n",token.type);
                     if(token.type==TT_EOL){
                         if(getToken()!=0){
                             _errNumber=1;
                             return 1;
                         }
-                        printf("Pokryl som EOL %d\n",token.type);
+                    //printf("Pokryl som EOL %d\n",token.type);
                         if(token.type==TT_INDENT){
                             if(getToken()!=0){
                                 _errNumber=1;
                                 return 1;
                             }
-                            printf("Pokryl som INDENT %d\n",token.type);
+                        //printf("Pokryl som INDENT %d\n",token.type);
                             if(body()==0){
                                 if(token.type==TT_DEDENT){
                                     if(getToken()!=0){
                                         _errNumber=1;
                                         return 1;
                                     }
-                                    printf("Pokryl som DEDENT %d\n",token.type);
+                                //printf("Pokryl som DEDENT %d\n",token.type);
                                     return 0;
                                 }
                             }
@@ -744,38 +1015,38 @@ int line(){
                 _errNumber=1;
                 return 1;
             }
-           printf("Pokryl som DEF %d\n",token.type);
+       //printf("Pokryl som DEF %d\n",token.type);
             if(token.type==TT_ID){
                 if(getToken()!=0){
                     _errNumber=1;
                     return 1;
                 }
-               printf("Pokryl som ID %d\n",token.type);
+           //printf("Pokryl som ID %d\n",token.type);
                 if(token.type==TT_LEFT_BRACKET){
                     if(getToken()!=0){
                         _errNumber=1;
                         return 1;
                     }
-                   printf("Pokryl som ( %d\n",token.type);
+               //printf("Pokryl som ( %d\n",token.type);
                     if(params()==0){
                         if(token.type==TT_RIGHT_BRACKET){
                             if(getToken()!=0){
                                 _errNumber=1;
                                 return 1;
                             }
-                           printf("Pokryl som ) %d\n",token.type);
+                       //printf("Pokryl som ) %d\n",token.type);
                             if(token.type==TT_COLON){
                                 if(getToken()!=0){
                                     _errNumber=1;
                                     return 1;
                                 }
-                               printf("Pokryl som COLON %d\n",token.type);
+                           //printf("Pokryl som COLON %d\n",token.type);
                                 if(token.type==TT_EOL){
                                     if(getToken()!=0){
                                         _errNumber=1;
                                         return 1;
                                     }
-                                   printf("Pokryl som EOL %d\n",token.type);
+                               //printf("Pokryl som EOL %d\n",token.type);
                                     if(token.type==TT_INDENT){
                                         if(getToken()!=0){
                                             _errNumber=1;
@@ -792,7 +1063,7 @@ int line(){
                                             _errNumber=99;
                                             return 1;
                                         }
-                                       printf("Pokryl som INDENT %d\n",token.type);
+                                   //printf("Pokryl som INDENT %d\n",token.type);
                                         int r=body();
                                         htFree(LFfunc[frame-1]);
                                         htFree(LFvar[frame-1]);
@@ -804,7 +1075,7 @@ int line(){
                                                     return 1;
                                                 }
 
-                                               printf("Pokryl som DEDENT %d\n",token.type);
+                                           //printf("Pokryl som DEDENT %d\n",token.type);
                                                 return 0;
                                             }
                                         }
@@ -826,7 +1097,7 @@ int line(){
 
 int line_n(){
 
-   printf("Vchadzam do line_n %d\n", token.type);
+//printf("Vchadzam do line_n %d\n", token.type);
     switch(token.type){
         case TT_EOF:
         case TT_DEDENT: return 0;
@@ -847,7 +1118,7 @@ int line_n(){
 
 int body(){
 
-   printf("Vchadzam do budy %d\n", token.type);
+//printf("Vchadzam do budy %d\n", token.type);
     switch(token.type){
         case TT_ID:
         case TT_VALUE_INT:
