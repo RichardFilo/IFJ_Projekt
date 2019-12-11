@@ -368,7 +368,7 @@ int getNextToken(){
                 break;
             case 11:
                 if(isdigit(c)){
-                    state=10;
+                    state=12;
                     addChar(buffer,c);
                 }
                 else{
